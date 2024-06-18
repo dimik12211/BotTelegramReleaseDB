@@ -19,6 +19,7 @@ public class UsersChatDAO implements DaoInterface<UsersChat> {
         try {
             Transaction transaction = session.beginTransaction();
             session.save(user);
+            session.evict(user);
             transaction.commit();
             return "true";
         } catch (Exception e) {
@@ -44,6 +45,8 @@ public class UsersChatDAO implements DaoInterface<UsersChat> {
     public String update(UsersChat user) {
         try {
             Transaction transaction = session.beginTransaction();
+            session.evict(user);
+            session.flush();
             session.update(user);
             transaction.commit();
             return "true";
@@ -66,7 +69,7 @@ public class UsersChatDAO implements DaoInterface<UsersChat> {
 
     public UsersChat findIdGroup(long id) {
         try {
-            Query query = session.createQuery("select u from GroupTable u where u. = :id");
+            Query query = session.createQuery("select u from GroupTable u where u.id = :id");
             query.setParameter("id", id);
             UsersChat usersChat = (UsersChat) query.getSingleResult();
             return usersChat;
@@ -124,6 +127,18 @@ public class UsersChatDAO implements DaoInterface<UsersChat> {
         }
     }
 
+    public UsersChat findChatIdUsersChat(long id) {
+        try {
+            Query query = session.createQuery("select u from UsersChat u where u.id = :id ORDER BY u.id");
+            query.setParameter("id", id);
+            UsersChat usersChat = (UsersChat) query.getSingleResult();
+            return usersChat;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public String isRegistration(String chatId) {
         try {
             Query query = session.createQuery("select u from UsersChat u where u.chatID = :chatId");
@@ -132,6 +147,17 @@ public class UsersChatDAO implements DaoInterface<UsersChat> {
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
+        }
+    }
+
+    public boolean isTrener(String chatId) {
+        try {
+            Query query = session.createQuery("select u from GroupTable u where u.chatId = :chatId");
+            query.setParameter("chatId", chatId);
+            return query.uniqueResult() != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

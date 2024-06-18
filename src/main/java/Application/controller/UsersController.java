@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UsersController {
@@ -16,10 +17,40 @@ public class UsersController {
     @Autowired
     private UsersChatService usersChatService;
 
+    @PostMapping(value = "AddUserInGroup")
+    public String controllerAddUserInGroup(String chatIdTrener, String chatId){
+        try {
+            return usersChatService.AddUserInGroup(chatIdTrener, chatId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
+    @PostMapping(value = "FindIsTrener")
+    public boolean controllerFindIsTrener(String chatId){
+        try {
+            return usersChatService.isTrener(chatId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @PostMapping(value = "FindUsers")
     public String controllerFindUsers(String chatId) {
         try {
             return usersChatService.findChatIdUsersChatServiceText(chatId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Ошибка при запросе возможных пользователей для назначения тренировки" + e.getMessage();
+        }
+    }
+
+    @PostMapping(value = "FindAllUsersAddGroup")
+    public String controllerFindAllUsersAddGroup(String chatId) {
+        try {
+            return usersChatService.findAllUsersAddGroup(chatId);
         } catch (Exception e) {
             e.printStackTrace();
             return "Ошибка при запросе возможных пользователей для назначения тренировки" + e.getMessage();

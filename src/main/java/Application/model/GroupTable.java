@@ -1,6 +1,8 @@
 package Application.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,5 +38,18 @@ public class GroupTable {
 
     public void setUsersChats(Set<UsersChat> usersChats) {
         this.usersChats = usersChats;
+    }
+
+    public void addUsersChats(UsersChat usersChat) {
+        try {
+            if (this.usersChats == null) {
+                this.usersChats = new HashSet<>();
+                this.usersChats.add(usersChat);
+            } else {
+                this.usersChats.add(usersChat);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

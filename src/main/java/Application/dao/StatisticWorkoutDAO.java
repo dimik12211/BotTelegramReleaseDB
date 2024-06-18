@@ -89,4 +89,15 @@ public class StatisticWorkoutDAO implements DaoInterface<StatisticWorkout> {
             return null;
         }
     }
+
+    public List<StatisticWorkout> findStatisticChatId(long idUserChatId) {
+        try {
+            Query query = session.createQuery("select s from StatisticWorkout s where s.usersChatId.id = :isUserChatId");
+            query.setParameter("isUserChatId", idUserChatId);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

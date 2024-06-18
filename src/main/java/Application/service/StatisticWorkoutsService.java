@@ -78,4 +78,16 @@ public class StatisticWorkoutsService implements ServiceInterface<StatisticWorko
             return null;
         }
     }
+
+    public String getStatisticText(String chatId) {
+        try {
+            UsersChat usersChat = usersChatService.findChatIdUsersChatService(chatId);
+            List<StatisticWorkout> statisticWorkouts = statisticWorkoutDAO.findStatisticChatId(usersChat.getId());
+            String returnText = "Общее количество проведенных тренировок: " + statisticWorkouts.size() + "\n";
+            return returnText;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 }

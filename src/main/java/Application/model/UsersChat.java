@@ -25,11 +25,12 @@ public class UsersChat {
     private boolean active;
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Workout> workouts;
+
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<GroupTable> groupTable;
+
     @OneToMany(mappedBy = "usersChatId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StatisticWorkout> statisticWorkouts;
-
     @OneToMany(mappedBy = "usersChatId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Exercises> exercises;
 
@@ -75,15 +76,15 @@ public class UsersChat {
         this.phoneNumber = phoneNumber;
     }
 
-    //@Override
 
+    //@Override
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
-
     public boolean getActive() {
         return active;
     }
@@ -91,6 +92,7 @@ public class UsersChat {
     public void setActive(boolean active) {
         this.active = active;
     }
+
 
     /*public Set<Role> getRoles() {
         return roles;
@@ -110,27 +112,26 @@ public class UsersChat {
     }
 
     @Override*/
-
     public String getUsername() { //как Username используется ID чата
         return getChatID();
     }
-    //@Override
 
+    //@Override
     public boolean isAccountNonExpired() {
         return true;
     }
-    //@Override
 
+    //@Override
     public boolean isAccountNonLocked() {
         return true;
     }
-    //@Override
 
+    //@Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-    //@Override
 
+    //@Override
     public boolean isEnabled() {
         if (getActive()) {
             return true;
@@ -138,10 +139,10 @@ public class UsersChat {
             return false;
         }
     }
+
     public Set<Workout> getWorkouts() {
         return workouts;
     }
-
     public void setWorkouts(Set<Workout> workouts) {
         this.workouts = workouts;
     }
@@ -190,6 +191,27 @@ public class UsersChat {
                 this.exercises.add(exercises);
             } else {
                 this.exercises.add(exercises);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Set<GroupTable> getGroupTable() {
+        return groupTable;
+    }
+
+    public void setGroupTable(Set<GroupTable> groupTable) {
+        this.groupTable = groupTable;
+    }
+
+    public void addGroupTable(GroupTable groupTable){
+        try {
+            if (this.groupTable == null) {
+                this.groupTable = new HashSet<>();
+                this.groupTable.add(groupTable);
+            } else {
+                this.groupTable.add(groupTable);
             }
         } catch (Exception e) {
             e.printStackTrace();

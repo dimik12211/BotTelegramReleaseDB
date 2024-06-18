@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersChatService implements /*UserDetailsService, */ServiceInterface<UsersChat> {
@@ -113,9 +115,28 @@ public class UsersChatService implements /*UserDetailsService, */ServiceInterfac
         try {
             GroupTable groupTable = groupDAO.findGroup(chatId);
             String returnText = "";
-            List<UsersChat> usersChats = new ArrayList<>(groupTable.getUsersChats());
+            List<UsersChat> usersChatsDublicats = new ArrayList<>(groupTable.getUsersChats());
+            List<UsersChat> usersChats = usersChatsDublicats.stream().distinct().collect(Collectors.toList());
             for (int i = 0; i < usersChats.size(); i++) {
                 if (usersChats.get(i).getActive()) {
+                    if (!Objects.equals(usersChats.get(i).getChatID(), chatId)) {
+                        returnText += "id: " + usersChats.get(i).getId() + " chat: " + usersChats.get(i).getChatID() + " name: " + usersChats.get(i).getNameUser() + " phone: " + usersChats.get(i).getPhoneNumber() + "\n";
+                    }
+                }
+            }
+            return returnText;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Ошибка формирования списка пользователей: " + e.getMessage();
+        }
+    }
+
+    public String findAllUsersAddGroup(String chatId) {
+        try {
+            String returnText = "";
+            List<UsersChat> usersChats = usersChatDAO.findAll();
+            for (int i = 0; i < usersChats.size(); i++) {
+                if (!Objects.equals(usersChats.get(i).getChatID(), chatId)) {
                     returnText += "id: " + usersChats.get(i).getId() + " chat: " + usersChats.get(i).getChatID() + " name: " + usersChats.get(i).getNameUser() + " phone: " + usersChats.get(i).getPhoneNumber() + "\n";
                 }
             }
@@ -149,13 +170,37 @@ public class UsersChatService implements /*UserDetailsService, */ServiceInterfac
     public String activeUser(String chatId) {
         try {
             UsersChat usersChat = usersChatDAO.findChatIdUsersChat(chatId);
-            if(usersChat.getActive()){
+            if (usersChat.getActive()) {
                 usersChat.setActive(false);
             } else {
                 usersChat.setActive(true);
             }
             usersChatDAO.update(usersChat);
             return "true " + usersChat.getActive();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
+    public boolean isTrener(String chatId) {
+        try {
+            return usersChatDAO.isTrener(chatId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String AddUserInGroup(String chatIdTrener, String chatId) {
+        try {
+            UsersChat usersChat = usersChatDAO.findChatIdUsersChat(Long.parseLong(chatId));
+            GroupTable groupTable = groupDAO.findGroup(chatIdTrener);
+            groupTable.addUsersChats(usersChat);
+            groupDAO.update(groupTable);
+            usersChat.addGroupTable(groupTable);
+            usersChatDAO.update(usersChat);
+            return "Пользователь успешно добавлен в группу";
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();

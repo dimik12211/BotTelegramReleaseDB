@@ -10,8 +10,14 @@ public class Exercises {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "chatId", unique = true)
+    @Column(name = "fileId")
+    private String fileId;
+
+    @Column(name = "chatId")
     private String chatId;
+
+    @Column(name = "videoOrPhoto")
+    private String videoOrPhoto;
 
     @Column(name = "nameExercises")
     private String nameExercises;
@@ -24,6 +30,21 @@ public class Exercises {
 
     }
 
+    public Exercises(String fileId, String chatId, String videoOrPhoto, String nameExercises){
+        this.fileId = fileId;
+        this.chatId = chatId;
+        this.videoOrPhoto = videoOrPhoto;
+        this.nameExercises = nameExercises;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
     public long getId() {
         return id;
     }
@@ -34,6 +55,14 @@ public class Exercises {
 
     public void setChatId(String chatId) {
         this.chatId = chatId;
+    }
+
+    public String getVideoOrPhoto() {
+        return videoOrPhoto;
+    }
+
+    public void setVideoOrPhoto(String videoOrPhoto) {
+        this.videoOrPhoto = videoOrPhoto;
     }
 
     public String getNameExercises() {

@@ -31,4 +31,16 @@ public class GroupDAO {
             return e.getMessage();
         }
     }
+
+    public String update(GroupTable groupTable) {
+        try {
+            Transaction transaction = session.beginTransaction();
+            session.update(groupTable);
+            transaction.commit();
+            return "true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 }

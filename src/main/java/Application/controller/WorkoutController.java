@@ -1,5 +1,6 @@
 package Application.controller;
 
+import Application.service.StatisticWorkoutsService;
 import Application.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,19 @@ public class WorkoutController {
 
     @Autowired
     private WorkoutService workoutService;
+
+    @Autowired
+    private StatisticWorkoutsService statisticWorkoutsService;
+
+    @PostMapping(value = "GetStatistic")
+    public String controllerGetStatistic(String chatId) {
+        try {
+            return statisticWorkoutsService.getStatisticText(chatId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Ошибка запроса в сервис БД. " + e.getMessage();
+        }
+    }
 
     @PostMapping(value = "SaveWorkout")
     public boolean controllerSaveWorkout(String chatId, String workoutJson) {
