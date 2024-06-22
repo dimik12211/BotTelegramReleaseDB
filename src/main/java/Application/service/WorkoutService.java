@@ -22,7 +22,7 @@ public class WorkoutService {
     @Autowired
     private StatisticWorkoutsService statisticWorkoutsService;
 
-    public boolean serviceSaveWorkout(String chatId, String workoutJson) { //проверить правильный ли тут JSON и проверить ключи
+    public boolean serviceSaveWorkout(String chatId, String workoutJson) {
         try {
             JSONObject jsonObject = new JSONObject(workoutJson);
             Workout workout = new Workout();

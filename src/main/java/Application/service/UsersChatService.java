@@ -93,15 +93,6 @@ public class UsersChatService implements /*UserDetailsService, */ServiceInterfac
         }
     }
 
-    /*public String findChatIdBooleanService(String chatId) {
-        try {
-            return usersChatDAO.findChatIdBoolean(chatId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-    }*/
-
     public UsersChat findChatIdUsersChatService(String chatId) {
         try {
             return usersChatDAO.findChatIdUsersChat(chatId);
@@ -146,17 +137,6 @@ public class UsersChatService implements /*UserDetailsService, */ServiceInterfac
             return "Ошибка формирования списка пользователей: " + e.getMessage();
         }
     }
-
-    /*@Override
-    public UserDetails loadUserByUsername(String chatId) throws UsernameNotFoundException {
-        try {
-            UsersChat usersChat = findChatIdUsersChatService(chatId);
-            return usersChat;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 
     public String isRegistration(String chatId) {
         try {
